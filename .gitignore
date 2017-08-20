@@ -410,3 +410,18 @@ __pycache__/
 # should be stored in the .pubxml.user file.
 
 # End of https://www.gitignore.io/api/c++,visualstudio,xcode,windows,macos
+
+# Created by https://www.gitignore.io/api/cmake
+
+### CMake ###
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+# End of https://www.gitignore.io/api/cmake
