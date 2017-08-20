@@ -5,7 +5,7 @@
 
 #include "OpenGLRenderDevice.hpp"
 
-namespace forge
+namespace starforge
 {
 	class OpenGLVertexShader : public VertexShader
 	{

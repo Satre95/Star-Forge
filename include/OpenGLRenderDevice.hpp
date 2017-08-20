@@ -2,7 +2,7 @@
 
 #include "RenderDevice.hpp"
 
-namespace forge
+namespace starforge
 {
 	class OpenGLRasterState;
 	class OpenGLDepthStencilState;

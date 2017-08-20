@@ -1,7 +1,7 @@
 #pragma once
 
 /// The global Star Forge namespace.
-namespace forge
+namespace starforge
 {
 	/// Encapsulates a vertex shader defintion
 	class VertexShader

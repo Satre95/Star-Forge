@@ -1,7 +1,7 @@
 #include "RenderDevice.hpp"
 #include "OpenGLRenderDevice.hpp"
 
-namespace forge
+namespace starforge
 {
 	RenderDevice *CreateRenderDevice()
 	{
