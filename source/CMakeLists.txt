@@ -1,6 +1,6 @@
 include_directories("${GLFW_SOURCE_DIR}/deps")
 
-add_library(StarForge STATIC Platform.cpp)
+add_library(StarForge STATIC RenderDevice.cpp OpenGLRenderDevice.cpp)
 
 target_link_libraries(StarForge glfw glm)
 
