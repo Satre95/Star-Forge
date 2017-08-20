@@ -50,7 +50,7 @@ namespace forge
 
 		virtual PipelineParam *GetParam(const char *name) = 0;
 
-	private:
+	protected:
 		Pipeline() {}
 	};
 
