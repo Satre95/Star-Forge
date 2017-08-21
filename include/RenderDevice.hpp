@@ -59,7 +59,8 @@ namespace starforge
 	{
 	public:
 		virtual ~VertexBuffer() {}
-
+		VertexBuffer(const VertexBuffer &) = delete;
+		VertexBuffer & operator=(const VertexBuffer &) = delete;
 	protected:
 		VertexBuffer() {}
 	};
@@ -79,6 +80,8 @@ namespace starforge
 	{
 	public:
 		virtual ~VertexArray() {}
+		VertexArray(const VertexArray &) = delete;
+		VertexArray & operator=(const VertexArray &) = delete;
 
 	protected:
 		VertexArray() {}
@@ -89,6 +92,8 @@ namespace starforge
 	{
 	public:
 		virtual ~IndexBuffer() {}
+		IndexBuffer(const IndexBuffer &) = delete;
+		IndexBuffer& operator=(const IndexBuffer &) = delete;
 
 	protected:
 		IndexBuffer() {}
@@ -99,6 +104,8 @@ namespace starforge
 	{
 	public:
 		virtual ~Texture2D() {}
+		Texture2D(const Texture2D &) = delete;
+		Texture2D & operator=(const Texture2D &) = delete;
 
 	protected:
 		Texture2D() {}
@@ -134,13 +141,13 @@ namespace starforge
 		/// location binding for vertex element;
 		unsigned int index;
 		/// type of vertex element
-		VertexElementType type; 
+		VertexElementType type;
 		/// number of components
-		int size; 
+		int size;
 		/// number of bytes between each successive element (leave zero for this to be assumed to be size times size of type)
-		int stride; 
+		int stride;
 		/// offset where first occurrence of this vertex element resides in the buffer
-		long long offset; 
+		long long offset;
 	};
 
 	/// Encapsulates the rasterizer state
@@ -304,7 +311,7 @@ namespace starforge
 		virtual void SetIndexBuffer(IndexBuffer *indexBuffer) = 0;
 
 		/** Create a 2D texture.
-		 * 
+		 *
 		 * Data is assumed to consist of 32-bit pixel values where
 		 * 8 bits are used for each of the red, green, and blue
 		 * components, from lowest to highest byte order. The
@@ -357,7 +364,7 @@ namespace starforge
 		/// Draw a collection of triangles using the currently active shader pipeline and vertex array data
 		virtual void DrawTriangles(int offset, int count) = 0;
 
-		/** 
+		/**
 		 * Draw a collection of triangles using the currently active shader pipeline, vertex array data,
 		 * and index buffer
 		 */

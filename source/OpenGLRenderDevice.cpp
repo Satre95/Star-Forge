@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <algorithm>
+#include <iterator>
 
 #include "OpenGLRenderDevice.hpp"
 
@@ -220,6 +222,12 @@ namespace starforge
 		~OpenGLVertexDescription() override
 		{
 			delete[] openGLVertexElements;
+		}
+
+		OpenGLVertexDescription(const OpenGLVertexDescription & other)
+		{
+			numVertexElements = other.numVertexElements;
+			std::copy(other.openGLVertexElements, other.openGLVertexElements + numVertexElements, openGLVertexElements);
 		}
 
 		unsigned int numVertexElements = 0;
