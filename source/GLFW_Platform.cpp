@@ -32,7 +32,7 @@ namespace platform
 
 	static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
 	{
-		s_View[3][2] += yoffset;
+		s_View[3][2] += float(yoffset);
 	}
 
 	static void SetBounds(float width, float height)
@@ -90,7 +90,7 @@ namespace platform
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 #endif
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // required on OS X
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // required on MacOS
 	}
 
 	static void set_viewport_size(int width, int height)

@@ -11,5 +11,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 # Add external libs
 add_subdirectory(externals)
 
-# Build FrameGraphLib
+# Build StarForge
 add_subdirectory(source)
+
+# Build examples
+add_subdirectory(examples)
