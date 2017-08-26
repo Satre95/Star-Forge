@@ -1,4 +1,4 @@
-include_directories("${GLFW_SOURCE_DIR}/deps")
+include_directories("${GLFW_SOURCE_DIR}/deps" "../externals/assimp/include")
 
 add_library(StarForge STATIC
 			../include/RenderDevice.hpp ../include/OpenGLRenderDevice.hpp
@@ -8,6 +8,6 @@ add_library(StarForge STATIC
 			GLFW_Platform.cpp 
 			Model.cpp Mesh.cpp)
 
-target_link_libraries(StarForge glfw glm)
+target_link_libraries(StarForge glfw glm assimp)
 
 target_include_directories(StarForge PUBLIC ../include)
