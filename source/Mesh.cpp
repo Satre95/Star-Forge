@@ -29,21 +29,13 @@ namespace starforge
 		m_vao = renderDevice.CreateVertexArray(1, &m_vbo, &m_vertexDescription);
 	}
 
-	void Mesh::Draw(RenderDevice & renderDevice, const glm::mat4 & toWorld)
+	void Mesh::Draw(RenderDevice & renderDevice)
 	{
-		//TODO: Add call to logger after logger is implemented.
-		if (m_pipeline == nullptr) return;
-
-		m_pipeline->GetParam("uModel")->SetAsMat4(glm::value_ptr(toWorld * m_modelMatrix));
-
-		// set the texture slots
 		for (size_t i = 0; i < m_textures.size(); i++)
 			renderDevice.SetTexture2D(i, m_textures.at(i));
 
-		renderDevice.SetPipeline(m_pipeline);
 		renderDevice.SetVertexArray(m_vao);
 		renderDevice.SetIndexBuffer(m_ebo);
-
 		renderDevice.DrawTrianglesIndexed32(0, m_indices.size());
 	}
 }

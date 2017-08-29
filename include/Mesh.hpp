@@ -13,11 +13,9 @@ namespace starforge
 	public:
 		Mesh(std::vector <float> &, std::vector<unsigned int> &, const VertexDescription &, RenderDevice &);
 		~Mesh();
+		void Draw(RenderDevice &);
 
 		///Draws the mesh. Expects the pipeline view and projection matrices to already be set.
-		void Draw(RenderDevice &, const glm::mat4 & toWorld);
-		void SetPipeline(Pipeline * pipeIn) { m_pipeline = pipeIn; }
-		void SetModelMatrix(const glm::mat4 & mat) { m_modelMatrix = mat; }
 	protected:
 		Mesh(); //Direct creation is disallowed.
 
@@ -39,15 +37,7 @@ namespace starforge
 		VertexArray *m_vao = nullptr;
 		/// Encapsulation of the EBO in GPU mem
 		IndexBuffer *m_ebo = nullptr;
-		/**
-		 * The shader and draw pipeline that this mesh uses to draw itself.
-		 *
-		 * NOTE: The pipline is considered owned by the parent Model of this mesh, not
-		 * the mesh itself, hence the mesh does not destroy the pipeline when it is destroyed.
-		 */
-		Pipeline *m_pipeline = nullptr;
-		/// The model matrix of this mesh.
-		glm::mat4 m_modelMatrix;
+
 		/// Allocates the buffers and GPU mem.
 		void InitBuffers(RenderDevice & renderdevice);
 	};
