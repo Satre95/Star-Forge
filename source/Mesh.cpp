@@ -7,12 +7,11 @@ namespace starforge
 
 	Mesh::Mesh(std::vector <float>& vertsIn,
 		std::vector<unsigned int>& indicesIn,
-		const VertexDescription & vdIn,
-		RenderDevice & renderDevice) : m_vertexDescription(new VertexDescription(vdIn))
+		const VertexDescription & vdIn) : m_vertexDescription(new VertexDescription(vdIn))
 	{
 		m_vertices = vertsIn;
 		m_indices = indicesIn;
-		InitBuffers(renderDevice);
+		//InitBuffers(renderDevice);
 	}
 
 	Mesh::~Mesh()
