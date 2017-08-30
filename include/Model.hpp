@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -13,7 +14,7 @@ namespace starforge {
 	public:
 		Model(std::string const & path, bool gamma = false);
 		void Draw(RenderDevice & renderDevice);
-		void Load(std::string const & path);
+		void Load(std::string const & path, RenderDevice &);
 		/// Initializes the shader pipeline. If null or no argument is given,
 		/// class will automoatically generate a default pipeline.
 		void InitPipeline(RenderDevice & device, Pipeline * pipeline = nullptr);
@@ -21,7 +22,9 @@ namespace starforge {
 		Model() {};
 
 	private:
-
+		void Load(std::string path, RenderDevice &);
+		void ProcessNode(aiNode * node, const aiScene * scene, RenderDevice &);
+		Mesh * ProcessMesh(aiMesh * mesh, const aiScene * scene, RenderDevice &);
 		/**
 		 * The shader and draw pipeline that this mesh uses to draw itself.
 		 *
