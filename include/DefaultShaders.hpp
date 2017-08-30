@@ -6,10 +6,11 @@ namespace starforge {
 	 *
 	 * Supports vertices with attributes with bindgin locations in the following order:
 	 *  0. position
-	 *  1. texture coordinate
-	 *  2. tangent
-	 *  3. bitangent
-	 *  4. color
+	 *  1. normal
+	 *  2. texture coordinate
+	 *  3. tangent
+	 *  4. bitangent
+	 *  5. color
 	 */
 	const char * g_defaultVertexShader = R"END(
 #version 450 core
@@ -18,10 +19,11 @@ uniform mat4 uView;
 uniform mat4 uProjection;
 
 layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec2 aTexCoord;
-layout (location = 2) in vec3 aTangent;
-layout (location = 3) in vec3 aBitangent;
-layout (location = 4) in vec4 aColor;
+layout (location = 1) in vec3 aNormal;
+layout (location = 2) in vec2 aTexCoord;
+layout (location = 3) in vec3 aTangent;
+layout (location = 4) in vec3 aBitangent;
+layout (location = 5) in vec4 aColor;
 
 out vec2 FragTexCoord;
 out vec3 FragTangent;
