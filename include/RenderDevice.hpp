@@ -138,6 +138,9 @@ namespace starforge
 	/// Describes a vertex element within a vertex buffer
 	struct VertexElement
 	{
+		VertexElement() {}
+		VertexElement(unsigned int indexIn, VertexElementType typeIn, int sizeIn, int strideIn, long long offsetIn) :
+			index(indexIn), type(typeIn), size(sizeIn), stride(strideIn), offset(offsetIn) {}
 		/// location binding for vertex element;
 		unsigned int index;
 		/// type of vertex element
