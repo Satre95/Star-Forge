@@ -12,19 +12,21 @@
 namespace starforge {
 	class Model {
 	public:
-		Model(std::string const & path, bool gamma = false);
-		void Draw(RenderDevice & renderDevice);
-		void Load(std::string const & path, RenderDevice &);
-		/// Initializes the shader pipeline. If null or no argument is given,
-		/// class will automoatically generate a default pipeline.
-		void InitPipeline(RenderDevice & device, Pipeline * pipeline = nullptr);
+		//NOTE: Do not use this constructor directly, instead use RenderDevice::LoadModel
+		Model(std::string const & path, RenderDevice & renderDevice, bool gamma = false);
+		void Load(std::string path, RenderDevice & renderDevice);
+		//void Draw(RenderDevice & renderDevice);
+
+		void SetPipeline(Pipeline * pipeline) { m_pipeline = pipeline; }
+		Pipeline * GetPipeline() const { return m_pipeline; }
+		Mesh * GetMesh(size_t i) const { return m_meshes.at(i); }
+		size_t NumMeshes() const { return m_meshes.size(); }
 	protected:
 		Model() {};
 
 	private:
-		void Load(std::string path, RenderDevice &);
-		void ProcessNode(aiNode * node, const aiScene * scene, RenderDevice &);
-		Mesh * ProcessMesh(aiMesh * mesh, const aiScene * scene, RenderDevice &);
+		void ProcessNode(aiNode * node, const aiScene * scene, RenderDevice & renderDevice);
+		Mesh * ProcessMesh(aiMesh * mesh, const aiScene * scene, RenderDevice & renderDevice);
 		/**
 		 * The shader and draw pipeline that this mesh uses to draw itself.
 		 *

@@ -1,8 +1,11 @@
 #pragma once
+#include <string>
+#include <glm/matrix.hpp>
 
 /// The global Star Forge namespace.
 namespace starforge
 {
+	class Model;
 	/// Encapsulates a vertex shader defintion
 	class VertexShader
 	{
@@ -372,6 +375,15 @@ namespace starforge
 		 * and index buffer
 		 */
 		virtual void DrawTrianglesIndexed32(long long offset, int count) = 0;
+
+		/// Loads a model at the given path.
+		virtual Model * LoadModel(std::string path) = 0;
+
+		///Initializes the default pipeline and assigns it to a model.
+		virtual void InitAndAssignDefaultModelPipeline(Model & aModel) = 0;
+
+		///Draws the give model
+		virtual void DrawModel(Model & aModel, glm::mat4 & model, glm::mat4 & view, glm::mat4 & projection) = 0;
 	};
 
 	/// Creates a RenderDevice

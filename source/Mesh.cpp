@@ -11,7 +11,6 @@ namespace starforge
 	{
 		m_vertices = vertsIn;
 		m_indices = indicesIn;
-		//InitBuffers(renderDevice);
 	}
 
 	Mesh::~Mesh()

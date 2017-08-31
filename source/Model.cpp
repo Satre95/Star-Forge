@@ -2,25 +2,9 @@
 
 namespace starforge
 {
-	Model::Model(const std::string & path, bool gamma) : m_gammaCorrection(gamma)
+	Model::Model(const std::string & path, RenderDevice & renderDevice, bool gamma) : m_gammaCorrection(gamma)
 	{
-	}
-
-	void Model::InitPipeline(RenderDevice & renderDevice, Pipeline * pipeline)
-	{
-	}
-
-	void Model::Load(const std::string & path, RenderDevice & renderDevice)
-	{
-	}
-
-	void Model::Draw(RenderDevice & renderDevice)
-	{
-		//TODO: Add call to logger after logger is implemented.
-		if (m_pipeline == nullptr) return;
-
-		//Set the shader uniforms.
-		m_pipeline->GetParam("uModel")->SetAsMat4(glm::value_ptr(m_modelMatrix));
+		Load(path, renderDevice);
 	}
 
 	void Model::Load(std::string path, RenderDevice & renderDevice)
@@ -36,6 +20,10 @@ namespace starforge
 		}
 		// process ASSIMP's root node recursively
 		ProcessNode(scene->mRootNode, scene, renderDevice);
+
+		//Once all meshes have been constructed, tell them to init their buffers.
+		for (Mesh * aMesh : m_meshes)
+			aMesh->InitBuffers(renderDevice);
 	}
 
 	void Model::ProcessNode(aiNode * node, const aiScene * scene, RenderDevice & renderDevice)

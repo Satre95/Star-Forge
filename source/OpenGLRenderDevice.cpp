@@ -6,6 +6,7 @@
 #include <iterator>
 
 #include "OpenGLRenderDevice.hpp"
+#include "Model.hpp"
 
 namespace starforge
 {
@@ -634,5 +635,53 @@ namespace starforge
 	void OpenGLRenderDevice::DrawTrianglesIndexed32(long long offset, int count)
 	{
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, reinterpret_cast<const void *>(offset));
+	}
+
+	Model * OpenGLRenderDevice::LoadModel(std::string path)
+	{
+		return new Model(path, *this);
+	}
+
+	void OpenGLRenderDevice::InitAndAssignDefaultModelPipeline(Model & model)
+	{
+		VertexShader *vertexShader = CreateVertexShader(g_defaultVertexShaderSource);
+		PixelShader *pixelShader = CreatePixelShader(g_defaultPixelShaderSource);
+		Pipeline *pipeline = CreatePipeline(vertexShader, pixelShader);
+
+		//Set the texture uniforms
+		pipeline->GetParam("uTextureDiffuse")->SetAsInt(0);
+		pipeline->GetParam("uTextureSpecular")->SetAsInt(1);
+		pipeline->GetParam("uTextureNormal")->SetAsInt(2);
+		pipeline->GetParam("uTextureHeight")->SetAsInt(3);
+
+		DestroyVertexShader(vertexShader);
+		DestroyPixelShader(pixelShader);
+
+		model.SetPipeline(pipeline);
+	}
+
+	void OpenGLRenderDevice::DrawModel(Model & aModel, glm::mat4 & model, glm::mat4 & view, glm::mat4 & projection)
+	{
+		Pipeline * pipeline = aModel.GetPipeline();
+		//Set MVP uniforms
+		pipeline->GetParam("uModel")->SetAsMat4(glm::value_ptr(model));
+		pipeline->GetParam("uView")->SetAsMat4(glm::value_ptr(view));
+		pipeline->GetParam("uProjection")->SetAsMat4(glm::value_ptr(projection));
+		SetPipeline(pipeline);
+		//For each of the model's meshes, draw
+		for (size_t i = 0; i < aModel.NumMeshes(); i++)
+		{
+			Mesh * aMesh = aModel.GetMesh(i);
+			//Bind each of the mesh's textures.
+			for (size_t j = 0; j < aMesh->NumTextures(); j++)
+				SetTexture2D(j, aMesh->GetTexture(j));
+
+			//Bind the mesh's VAO and buffers
+			SetVertexArray(aMesh->GetVertexArray());
+			SetIndexBuffer(aMesh->GetIndexBuffer());
+
+			//Draw!
+			DrawTrianglesIndexed32(0, aMesh->NumIndices());
+		}
 	}
 }

@@ -1,6 +1,8 @@
 #pragma once
 
+#include <vector>
 #include "RenderDevice.hpp"
+#include "DefaultShaders.hpp"
 
 namespace starforge
 {
@@ -93,11 +95,19 @@ namespace starforge
 
 		void DrawTrianglesIndexed32(long long offset, int count) override;
 
+		Model * LoadModel(std::string path) override;
+
+		void InitAndAssignDefaultModelPipeline(Model & aModel) override;
+
+		void DrawModel(Model & aModel, glm::mat4 & model, glm::mat4 & view, glm::mat4 & projection) override;
+
 	private:
 		OpenGLRasterState *m_RasterState = nullptr;
 		OpenGLRasterState *m_DefaultRasterState = nullptr;
 
 		OpenGLDepthStencilState *m_DepthStencilState = nullptr;
 		OpenGLDepthStencilState *m_DefaultDepthStencilState = nullptr;
+
+		std::vector<Model *>m_models;
 	};
 }

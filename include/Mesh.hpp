@@ -15,6 +15,16 @@ namespace starforge
 		~Mesh();
 		void Draw(RenderDevice &);
 
+		size_t NumVertices() const { return m_vertices.size(); }
+		size_t NumIndices() const { return m_indices.size(); }
+		size_t NumTextures() const { return m_textures.size(); }
+		Texture2D * GetTexture(size_t i) const { return m_textures.at(i); }
+		VertexBuffer * GetVertexBuffer() const { return m_vbo; }
+		VertexArray * GetVertexArray() const { return m_vao; }
+		IndexBuffer * GetIndexBuffer() const { return m_ebo; }
+
+		/// Allocates the buffers and GPU mem.
+		void InitBuffers(RenderDevice & renderdevice);
 		///Draws the mesh. Expects the pipeline view and projection matrices to already be set.
 	protected:
 		Mesh(); //Direct creation is disallowed.
@@ -37,8 +47,5 @@ namespace starforge
 		VertexArray *m_vao = nullptr;
 		/// Encapsulation of the EBO in GPU mem
 		IndexBuffer *m_ebo = nullptr;
-
-		/// Allocates the buffers and GPU mem.
-		void InitBuffers(RenderDevice & renderdevice);
 	};
 }

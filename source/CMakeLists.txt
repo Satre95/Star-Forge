@@ -6,7 +6,8 @@ add_library(StarForge STATIC
 			../include/Mesh.hpp ../include/DefaultShaders.hpp
 			RenderDevice.cpp OpenGLRenderDevice.cpp
 			GLFW_Platform.cpp 
-			Model.cpp Mesh.cpp)
+			Model.cpp Mesh.cpp
+			DefaultShaders.cpp)
 
 target_link_libraries(StarForge glfw glm assimp)
 
