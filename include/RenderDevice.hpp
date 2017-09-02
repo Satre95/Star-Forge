@@ -36,6 +36,8 @@ namespace starforge
 
 		virtual void SetAsMat4(const float *value) = 0;
 
+		virtual void SetAsMat3(const float *value) = 0;
+
 		virtual void SetAsIntArray(int count, const int *values) = 0;
 
 		virtual void SetAsFloatArray(int count, const float *values) = 0;

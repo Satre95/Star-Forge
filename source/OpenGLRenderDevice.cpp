@@ -132,6 +132,12 @@ namespace starforge
 			glUniformMatrix4fv(location, 1, /*transpose=*/GL_FALSE, value);
 		}
 
+		void SetAsMat3(const float * value) override
+		{
+			glUseProgram(pipeline->shaderProgram);
+			glUniformMatrix3fv(location, 1, GL_FALSE, value);
+		}
+
 		void SetAsIntArray(int count, const int *values) override
 		{
 			glUseProgram(pipeline->shaderProgram);
@@ -667,6 +673,10 @@ namespace starforge
 		pipeline->GetParam("uModel")->SetAsMat4(glm::value_ptr(model));
 		pipeline->GetParam("uView")->SetAsMat4(glm::value_ptr(view));
 		pipeline->GetParam("uProjection")->SetAsMat4(glm::value_ptr(projection));
+		//Create the normal matrix
+		glm::mat4 normalMat = glm::mat3(glm::transpose(glm::inverse(model)));
+		pipeline->GetParam("uNormalMatrix")->SetAsMat3(glm::value_ptr(normalMat));
+
 		SetPipeline(pipeline);
 		//For each of the model's meshes, draw
 		for (size_t i = 0; i < aModel.NumMeshes(); i++)

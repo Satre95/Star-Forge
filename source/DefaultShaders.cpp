@@ -1,11 +1,13 @@
 #include "DefaultShaders.hpp"
 namespace starforge
 {
+	//--------------------------------------------------------------------
 	const char * g_defaultVertexShaderSource = R"END(
 #version 450 core
 uniform mat4 uModel;
 uniform mat4 uView;
 uniform mat4 uProjection;
+uniform mat4 uNormalMatrix;
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
@@ -23,7 +25,7 @@ out vec4 FragVertColor;
 void main()
 {
 	gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
-	FragNormal = aNormal;
+	FragNormal = uNormalMatrix * aNormal;
 	FragTexCood = aTexCoord;
 	FragTangent = aTangent;
 	FragBitangent = aBitangent;
@@ -31,6 +33,7 @@ void main()
 }
 	)END";
 
+	//--------------------------------------------------------------------
 	const char * g_defaultPixelShaderSource = R"END(
 #version 450 core
 // Allows shader to detect if textures are bound (requires OpenGL >= 4.2)
@@ -55,6 +58,8 @@ void main()
 	//TODO: Check diffuse texture
 	if(textureQueryLevels(uTextureDiffuse) != 0)
 		FragColor = texture(uTextureDiffuse, FragTexCoord);
+	else
+		FragColor = vec4(0.4f, 0.2f, 0.4f, 0.8f);
 	//TODO: Check specular texture
 	//TODO: Check for vertex color
 	//TODO: Perform lighting calculations
