@@ -7,7 +7,7 @@ namespace starforge
 
 	Mesh::Mesh(std::vector <float>& vertsIn,
 		std::vector<unsigned int>& indicesIn,
-		const VertexDescription & vdIn) : m_vertexDescription(new VertexDescription(vdIn))
+		VertexDescription * vdIn) : m_vertexDescription(vdIn)
 	{
 		m_vertices = vertsIn;
 		m_indices = indicesIn;

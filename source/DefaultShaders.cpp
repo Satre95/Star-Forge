@@ -7,7 +7,7 @@ namespace starforge
 uniform mat4 uModel;
 uniform mat4 uView;
 uniform mat4 uProjection;
-uniform mat4 uNormalMatrix;
+uniform mat3 uNormalMatrix;
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
@@ -26,7 +26,7 @@ void main()
 {
 	gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
 	FragNormal = uNormalMatrix * aNormal;
-	FragTexCood = aTexCoord;
+	FragTexCoord = aTexCoord;
 	FragTangent = aTangent;
 	FragBitangent = aBitangent;
 	FragVertColor = aColor;
@@ -38,7 +38,7 @@ void main()
 #version 450 core
 // Allows shader to detect if textures are bound (requires OpenGL >= 4.2)
 // see: https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_texture_query_levels.txt
-#extension GL_ARB_texture_query_levels
+#extension GL_ARB_texture_query_levels : enable
 
 uniform sampler2D uTextureDiffuse;
 uniform sampler2D uTextureSpecular;
@@ -56,10 +56,10 @@ out vec4 FragColor;
 void main()
 {
 	//TODO: Check diffuse texture
-	if(textureQueryLevels(uTextureDiffuse) != 0)
-		FragColor = texture(uTextureDiffuse, FragTexCoord);
-	else
-		FragColor = vec4(0.4f, 0.2f, 0.4f, 0.8f);
+	//if(textureQueryLevels(uTextureDiffuse) != 0)
+		//FragColor = texture(uTextureDiffuse, FragTexCoord);
+	//else
+		FragColor = vec4(0.8f, 0.2f, 0.4f, 1.0f);
 	//TODO: Check specular texture
 	//TODO: Check for vertex color
 	//TODO: Perform lighting calculations

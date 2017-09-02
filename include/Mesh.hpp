@@ -11,7 +11,7 @@ namespace starforge
 	class Mesh
 	{
 	public:
-		Mesh(std::vector <float> &, std::vector<unsigned int> &, const VertexDescription &);
+		Mesh(std::vector <float> &, std::vector<unsigned int> &, VertexDescription *);
 		~Mesh();
 		void Draw(RenderDevice &);
 

@@ -655,10 +655,14 @@ namespace starforge
 		Pipeline *pipeline = CreatePipeline(vertexShader, pixelShader);
 
 		//Set the texture uniforms
-		pipeline->GetParam("uTextureDiffuse")->SetAsInt(0);
-		pipeline->GetParam("uTextureSpecular")->SetAsInt(1);
-		pipeline->GetParam("uTextureNormal")->SetAsInt(2);
-		pipeline->GetParam("uTextureHeight")->SetAsInt(3);
+		if (pipeline->GetParam("uTextureDiffuse"))
+			pipeline->GetParam("uTextureDiffuse")->SetAsInt(0);
+		if (pipeline->GetParam("uTextureSpecular"))
+			pipeline->GetParam("uTextureSpecular")->SetAsInt(1);
+		if (pipeline->GetParam("uTextureNormal"))
+			pipeline->GetParam("uTextureNormal")->SetAsInt(2);
+		if (pipeline->GetParam("uTextureHeight"))
+			pipeline->GetParam("uTextureHeight")->SetAsInt(3);
 
 		DestroyVertexShader(vertexShader);
 		DestroyPixelShader(pixelShader);
@@ -670,12 +674,23 @@ namespace starforge
 	{
 		Pipeline * pipeline = aModel.GetPipeline();
 		//Set MVP uniforms
-		pipeline->GetParam("uModel")->SetAsMat4(glm::value_ptr(model));
-		pipeline->GetParam("uView")->SetAsMat4(glm::value_ptr(view));
-		pipeline->GetParam("uProjection")->SetAsMat4(glm::value_ptr(projection));
-		//Create the normal matrix
-		glm::mat4 normalMat = glm::mat3(glm::transpose(glm::inverse(model)));
-		pipeline->GetParam("uNormalMatrix")->SetAsMat3(glm::value_ptr(normalMat));
+		PipelineParam *uModel, *uView, *uProjection, *uNormalMatrix;
+		uModel = pipeline->GetParam("uModel");
+		uView = pipeline->GetParam("uView");
+		uProjection = pipeline->GetParam("uProjection");
+		uNormalMatrix = pipeline->GetParam("uNormalMatrix");
+		if (uModel)
+			uModel->SetAsMat4(glm::value_ptr(model));
+		if (uView)
+			uView->SetAsMat4(glm::value_ptr(view));
+		if (uProjection)
+			uProjection->SetAsMat4(glm::value_ptr(projection));
+		if (uNormalMatrix)
+		{
+			//Create the normal matrix
+			glm::mat4 normalMat = glm::mat3(glm::transpose(glm::inverse(model)));
+			uNormalMatrix->SetAsMat3(glm::value_ptr(normalMat));
+		}
 
 		SetPipeline(pipeline);
 		//For each of the model's meshes, draw
