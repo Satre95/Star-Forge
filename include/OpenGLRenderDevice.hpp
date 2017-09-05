@@ -55,7 +55,7 @@ namespace starforge
 
 		void SetTexture2D(unsigned int slot, Texture2D *texture2D) override;
 
-		RasterState *CreateRasterState(bool cullEnabled = true, Winding frontFace = WINDING_CCW, Face cullFace = FACE_BACK, RasterMode rasterMode = RASTERMODE_FILL) override;
+		RasterState *CreateRasterState(bool cullEnabled = false, Winding frontFace = WINDING_CCW, Face cullFace = FACE_BACK, RasterMode rasterMode = RASTERMODE_FILL) override;
 
 		void DestroyRasterState(RasterState *rasterState) override;
 

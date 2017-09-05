@@ -38,7 +38,7 @@ void main()
 #version 450 core
 // Allows shader to detect if textures are bound (requires OpenGL >= 4.2)
 // see: https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_texture_query_levels.txt
-#extension GL_ARB_texture_query_levels : enable
+//#extension GL_ARB_texture_query_levels : enable
 
 uniform sampler2D uTextureDiffuse;
 uniform sampler2D uTextureSpecular;

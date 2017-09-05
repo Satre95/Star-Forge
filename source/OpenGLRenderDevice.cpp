@@ -318,7 +318,7 @@ namespace starforge
 	{
 	public:
 
-		OpenGLRasterState(bool _cullEnabled = true, Winding _frontFace = WINDING_CCW, Face _cullFace = FACE_BACK, RasterMode _rasterMode = RASTERMODE_FILL)
+		OpenGLRasterState(bool _cullEnabled = false, Winding _frontFace = WINDING_CCW, Face _cullFace = FACE_BACK, RasterMode _rasterMode = RASTERMODE_FILL)
 		{
 			static const GLenum front_face_map[] = { GL_CW, GL_CCW };
 			static const GLenum cull_face_map[] = { GL_FRONT, GL_BACK, GL_FRONT_AND_BACK };
