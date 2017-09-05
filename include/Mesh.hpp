@@ -13,7 +13,6 @@ namespace starforge
 	public:
 		Mesh(std::vector <float> &, std::vector<unsigned int> &, VertexDescription *);
 		~Mesh();
-		void Draw(RenderDevice &);
 
 		size_t NumVertices() const { return m_vertices.size(); }
 		size_t NumIndices() const { return m_indices.size(); }

@@ -26,14 +26,4 @@ namespace starforge
 
 		m_vao = renderDevice.CreateVertexArray(1, &m_vbo, &m_vertexDescription);
 	}
-
-	void Mesh::Draw(RenderDevice & renderDevice)
-	{
-		for (size_t i = 0; i < m_textures.size(); i++)
-			renderDevice.SetTexture2D(i, m_textures.at(i));
-
-		renderDevice.SetVertexArray(m_vao);
-		renderDevice.SetIndexBuffer(m_ebo);
-		renderDevice.DrawTrianglesIndexed32(0, m_indices.size());
-	}
 }
