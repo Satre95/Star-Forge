@@ -10,7 +10,11 @@
 
 #include "image888.h"
 
+#ifdef __APPLE__
+const char *vertexShaderSource = "#version 410 core\n"
+#else
 const char *vertexShaderSource = "#version 450 core\n"
+#endif
 "uniform mat4 uModel;\n"
 "uniform mat4 uView;\n"
 "uniform mat4 uProjection;\n"
@@ -22,7 +26,11 @@ const char *vertexShaderSource = "#version 450 core\n"
 "   gl_Position = uProjection * uView * uModel * vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 "   FragTexCoord = aTexCoord;\n"
 "}";
+#ifdef __APPLE__
+const char *pixelShaderSource = "#version 410 core\n"
+#else
 const char *pixelShaderSource = "#version 450 core\n"
+#endif
 "uniform sampler2D uTextureSampler;\n"
 "in vec2 FragTexCoord;\n"
 "out vec4 FragColor;\n"

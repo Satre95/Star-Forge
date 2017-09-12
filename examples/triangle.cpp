@@ -1,13 +1,24 @@
 #include <Platform.hpp>
 #include <RenderDevice.hpp>
 
+
+#ifdef __APPLE__
+const char *vertexShaderSource = "#version 410 core\n"
+#else
 const char *vertexShaderSource = "#version 450 core\n"
+#endif
 "layout (location = 0) in vec3 aPos;\n"
 "void main()\n"
 "{\n"
 "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
 "}\0";
+
+
+#ifdef __APPLE__
+const char *pixelShaderSource = "#version 410 core\n"
+#else
 const char *pixelShaderSource = "#version 450 core\n"
+#endif
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
