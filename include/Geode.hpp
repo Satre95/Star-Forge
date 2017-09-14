@@ -9,5 +9,8 @@ namespace starforge {
 		Geode(Node * parent = nullptr);
 		virtual ~Geode();
 		
+	protected:
+		
+
 	};
 }

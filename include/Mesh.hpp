@@ -28,7 +28,6 @@ namespace starforge
 	protected:
 		Mesh(); //Direct creation is disallowed.
 
-	private:
 		/**
 		 * The vertices of this mesh are stored as a generic array of floats,
 		 * the element description is used at runtime to specify the attributes.
