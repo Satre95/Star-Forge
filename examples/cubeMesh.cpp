@@ -82,7 +82,10 @@ int main() {
 		platform::PresentPlatformWindow(window);
 
 	}
-
+	
 	delete cubeMesh;
+	renderDevice->DestroyPipeline(pipeline);
+	platform::TerminatePlatform();
+
 	return 0;
 }
