@@ -56,36 +56,44 @@ namespace starforge
 		size_t vertexSize = 0;
 		if (mesh->HasPositions())
 			vertexSize += sizeof(glm::vec3);				//Positions
-		//if (mesh->HasNormals())
-		//	vertexSize += sizeof(glm::vec3);				//Normals
-		//if (mesh->HasTextureCoords(0))
-		//	vertexSize += sizeof(glm::vec2);				//TexCoords
-		//if (mesh->HasTangentsAndBitangents())
-		//	vertexSize += sizeof(glm::vec3) * 2;			//Tangents & Bitangents
-		//if (mesh->HasVertexColors(0))
-		//	vertexSize += sizeof(glm::vec4);				//Colors
+		if (mesh->HasNormals())
+			vertexSize += sizeof(glm::vec3);				//Normals
+		if (mesh->HasTextureCoords(0))
+			vertexSize += sizeof(glm::vec2);				//TexCoords
+		if (mesh->HasTangentsAndBitangents())
+			vertexSize += sizeof(glm::vec3) * 2;			//Tangents & Bitangents
+		if (mesh->HasVertexColors(0))
+			vertexSize += sizeof(glm::vec4);				//Colors
+
+		std::cout << "Vertex Size in bytes: " << vertexSize << std::endl;
+
 
 		//Now generate a vertex description.
 		//for each vertex attrib, create an element.
 		size_t offset = 0;
 		std::vector<VertexElement> vertexElements;
+		std::cout << "Mesh vertices have ";
 		if (mesh->HasPositions())
 		{
+			std::cout << "positions, ";
 			vertexElements.emplace_back(0, VERTEXELEMENTTYPE_FLOAT, 3, vertexSize, offset);
 			offset += sizeof(glm::vec3);
 		}
-		/*if (mesh->HasNormals())
+		if (mesh->HasNormals())
 		{
+			std::cout << "normals, ";
 			vertexElements.emplace_back(1, VERTEXELEMENTTYPE_FLOAT, 3, vertexSize, offset);
 			offset += sizeof(glm::vec3);
 		}
 		if (mesh->mTextureCoords[0])
 		{
+			std::cout << " tex coords, ";
 			vertexElements.emplace_back(2, VERTEXELEMENTTYPE_FLOAT, 2, vertexSize, offset);
 			offset += sizeof(glm::vec2);
 		}
 		if (mesh->HasTangentsAndBitangents())
 		{
+			std::cout << "tangents & bitangents, ";
 			vertexElements.emplace_back(3, VERTEXELEMENTTYPE_FLOAT, 3, vertexSize, offset);
 			offset += sizeof(glm::vec3);
 			vertexElements.emplace_back(4, VERTEXELEMENTTYPE_FLOAT, 3, vertexSize, offset);
@@ -93,9 +101,11 @@ namespace starforge
 		}
 		if (mesh->HasVertexColors(0))
 		{
+			std::cout << "vertex colors";
 			vertexElements.emplace_back(5, VERTEXELEMENTTYPE_FLOAT, 4, vertexSize, offset);
 			offset += sizeof(glm::vec4);
-		}*/
+		}
+		std::cout << std::endl;
 		//Create the vertex description
 		VertexDescription * vertexDescription = renderDevice.CreateVertexDescription((unsigned int)vertexElements.size(), vertexElements.data());
 
@@ -112,55 +122,56 @@ namespace starforge
 				for (int i = 0; i < pos.length(); i++)
 					vertexData.push_back(pos[i]);
 			}
-			//if (mesh->HasNormals())
-			//{
-			//	glm::vec3 normal;
-			//	// normals
-			//	normal.x = mesh->mNormals[vCount].x;
-			//	normal.y = mesh->mNormals[vCount].y;
-			//	normal.z = mesh->mNormals[vCount].z;
-			//	for (int i = 0; i < normal.length(); i++)
-			//		vertexData.push_back(normal[i]);
-			//}
-			//// texture coordinates
-			//if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
-			//{
-			//	glm::vec2 texCoord;
-			//	// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
-			//	// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
-			//	texCoord.x = mesh->mTextureCoords[0][vCount].x;
-			//	texCoord.y = mesh->mTextureCoords[0][vCount].y;
-			//	for (int i = 0; i < texCoord.length(); i++)
-			//		vertexData.push_back(texCoord[i]);
-			//}
-			//if (mesh->HasTangentsAndBitangents())
-			//{
-			//	// tangent
-			//	glm::vec3 tangent;
-			//	tangent.x = mesh->mTangents[vCount].x;
-			//	tangent.y = mesh->mTangents[vCount].y;
-			//	tangent.z = mesh->mTangents[vCount].z;
-			//	for (int i = 0; i < tangent.length(); i++)
-			//		vertexData.push_back(tangent[i]);
-			//	// bitangent
-			//	glm::vec3 bitangent;
-			//	bitangent.x = mesh->mBitangents[vCount].x;
-			//	bitangent.y = mesh->mBitangents[vCount].y;
-			//	bitangent.z = mesh->mBitangents[vCount].z;
-			//	for (int i = 0; i < bitangent.length(); i++)
-			//		vertexData.push_back(bitangent[i]);
-			//}
-			//if (mesh->HasVertexColors(0))
-			//{
-			//	glm::vec4 color;
-			//	color.r = mesh->mColors[0][vCount].r;
-			//	color.g = mesh->mColors[0][vCount].g;
-			//	color.b = mesh->mColors[0][vCount].b;
-			//	color.a = mesh->mColors[0][vCount].a;
-			//	for (int i = 0; i < color.length(); i++)
-			//		vertexData.push_back(color[i]);
-			//}
+			if (mesh->HasNormals())
+			{
+				glm::vec3 normal;
+				// normals
+				normal.x = mesh->mNormals[vCount].x;
+				normal.y = mesh->mNormals[vCount].y;
+				normal.z = mesh->mNormals[vCount].z;
+				for (int i = 0; i < normal.length(); i++)
+					vertexData.push_back(normal[i]);
+			}
+			// texture coordinates
+			if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+			{
+				glm::vec2 texCoord;
+				// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't
+				// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+				texCoord.x = mesh->mTextureCoords[0][vCount].x;
+				texCoord.y = mesh->mTextureCoords[0][vCount].y;
+				for (int i = 0; i < texCoord.length(); i++)
+					vertexData.push_back(texCoord[i]);
+			}
+			if (mesh->HasTangentsAndBitangents())
+			{
+				// tangent
+				glm::vec3 tangent;
+				tangent.x = mesh->mTangents[vCount].x;
+				tangent.y = mesh->mTangents[vCount].y;
+				tangent.z = mesh->mTangents[vCount].z;
+				for (int i = 0; i < tangent.length(); i++)
+					vertexData.push_back(tangent[i]);
+				// bitangent
+				glm::vec3 bitangent;
+				bitangent.x = mesh->mBitangents[vCount].x;
+				bitangent.y = mesh->mBitangents[vCount].y;
+				bitangent.z = mesh->mBitangents[vCount].z;
+				for (int i = 0; i < bitangent.length(); i++)
+					vertexData.push_back(bitangent[i]);
+			}
+			if (mesh->HasVertexColors(0))
+			{
+				glm::vec4 color;
+				color.r = mesh->mColors[0][vCount].r;
+				color.g = mesh->mColors[0][vCount].g;
+				color.b = mesh->mColors[0][vCount].b;
+				color.a = mesh->mColors[0][vCount].a;
+				for (int i = 0; i < color.length(); i++)
+					vertexData.push_back(color[i]);
+			}
 		}
+
 
 		// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
 		for (unsigned int i = 0; i < mesh->mNumFaces; i++)
@@ -193,6 +204,8 @@ namespace starforge
 		//textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
 
 		// return a mesh object created from the extracted mesh data
-		return new Mesh(vertexData, indices, vertexDescription);
+		Mesh * newMesh = new Mesh(vertexData, indices, vertexDescription);
+		newMesh->m_numVertices = mesh->mNumVertices;
+		return newMesh;
 	}
 }

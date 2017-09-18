@@ -11,6 +11,7 @@ namespace starforge
 	class Mesh
 	{
 	public:
+		friend class Model;
 		Mesh(std::vector <float> &, std::vector<unsigned int> &, VertexDescription *);
 		~Mesh();
 
