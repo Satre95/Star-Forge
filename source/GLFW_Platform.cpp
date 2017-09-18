@@ -17,8 +17,8 @@ namespace platform
 	static float s_Height;
 	static glm::mat4 s_Projection(glm::mat4(1.0f));
 
-	static glm::mat3 s_LastModel(1);
-	static glm::mat3 s_Model(1);
+	static glm::mat4 s_LastModel(1);
+	static glm::mat4 s_Model(1);
 
 	static glm::vec3 s_BegVec(0);
 	static glm::vec3 s_EndVec(0);
@@ -120,9 +120,9 @@ namespace platform
 		{
 			if (button == GLFW_MOUSE_BUTTON_RIGHT)
 			{
-				s_LastModel = glm::mat3(1);
+				s_LastModel = glm::mat4(1);
 
-				s_Model = glm::mat3(1);
+				s_Model = glm::mat4(1);
 			}
 			else if (button == GLFW_MOUSE_BUTTON_LEFT)
 			{
@@ -167,7 +167,7 @@ namespace platform
 				quat.x = quat.y = quat.z = quat.w = 0.0f;
 			}
 
-			s_Model = glm::mat3_cast(quat) * s_LastModel;
+			s_Model = glm::mat4_cast(quat) * s_LastModel;
 		}
 	}
 	PLATFORM_WINDOW_REF CreatePlatformWindow(int width, int height, const char *title)
