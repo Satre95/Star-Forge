@@ -22,7 +22,8 @@ namespace starforge
 	void Mesh::InitBuffers(RenderDevice & renderDevice)
 	{
 		m_vbo = renderDevice.CreateVertexBuffer(m_vertices.size(), m_vertices.data());
-		m_ebo = renderDevice.CreateIndexBuffer(m_indices.size(), m_indices.data());
+		if(HasIndices())
+			m_ebo = renderDevice.CreateIndexBuffer(m_indices.size(), m_indices.data());
 
 		m_vao = renderDevice.CreateVertexArray(1, &m_vbo, &m_vertexDescription);
 	}

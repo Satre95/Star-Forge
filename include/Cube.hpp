@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Model.hpp"
+#include "Mesh.hpp"
 
 namespace starforge {
 	class Cube: public Mesh
 	{
 	public:
-		Cube(float size = 1.0f);
+		Cube( RenderDevice & renderDevice, float size = 1.0f);
 		~Cube();
 
 	private:

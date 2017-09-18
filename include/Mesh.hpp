@@ -21,6 +21,7 @@ namespace starforge
 		VertexBuffer * GetVertexBuffer() const { return m_vbo; }
 		VertexArray * GetVertexArray() const { return m_vao; }
 		IndexBuffer * GetIndexBuffer() const { return m_ebo; }
+		bool HasIndices() { return m_indices.size() != 0; }
 
 		/// Allocates the buffers and GPU mem.
 		void InitBuffers(RenderDevice & renderdevice);

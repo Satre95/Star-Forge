@@ -709,4 +709,16 @@ namespace starforge
 			DrawTrianglesIndexed32(0, aMesh->NumIndices());
 		}
 	}
+
+	void OpenGLRenderDevice::DrawMesh(Mesh & mesh, Pipeline & pipeline) {
+		SetPipeline(&pipeline);
+		SetVertexArray(mesh.GetVertexArray());
+
+		if(mesh.HasIndices()) {
+			SetIndexBuffer(mesh.GetIndexBuffer());
+			DrawTrianglesIndexed32(0, mesh.NumIndices());
+		} else {
+			DrawTriangles(0, mesh.NumVertices());
+		}
+	}	
 }

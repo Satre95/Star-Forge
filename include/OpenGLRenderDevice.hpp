@@ -101,6 +101,7 @@ namespace starforge
 
 		void DrawModel(Model & aModel, glm::mat4 & model, glm::mat4 & view, glm::mat4 & projection) override;
 
+		void DrawMesh(Mesh & mesh, Pipeline & pipeline) override;
 	private:
 		OpenGLRasterState *m_RasterState = nullptr;
 		OpenGLRasterState *m_DefaultRasterState = nullptr;

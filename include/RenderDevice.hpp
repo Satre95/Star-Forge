@@ -6,6 +6,7 @@
 namespace starforge
 {
 	class Model;
+	class Mesh;
 	/// Encapsulates a vertex shader defintion
 	class VertexShader
 	{
@@ -386,6 +387,10 @@ namespace starforge
 
 		///Draws the give model
 		virtual void DrawModel(Model & aModel, glm::mat4 & model, glm::mat4 & view, glm::mat4 & projection) = 0;
+
+		/// Draws the given mesh
+		virtual void DrawMesh(Mesh & mesh, Pipeline & pipeline) = 0;
+
 	};
 
 	/// Creates a RenderDevice

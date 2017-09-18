@@ -21,6 +21,8 @@ namespace starforge {
 		Pipeline * GetPipeline() const { return m_pipeline; }
 		Mesh * GetMesh(size_t i) const { return m_meshes.at(i); }
 		size_t NumMeshes() const { return m_meshes.size(); }
+		void AddMesh(Mesh * mesh) { m_meshes.push_back(mesh); }
+		
 	protected:
 		Model() {};
 
