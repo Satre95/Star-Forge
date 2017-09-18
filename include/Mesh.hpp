@@ -14,7 +14,7 @@ namespace starforge
 		Mesh(std::vector <float> &, std::vector<unsigned int> &, VertexDescription *);
 		~Mesh();
 
-		size_t NumVertices() const { return m_vertices.size(); }
+		size_t NumVertices() const { return m_numVertices; }
 		size_t NumIndices() const { return m_indices.size(); }
 		size_t NumTextures() const { return m_textures.size(); }
 		Texture2D * GetTexture(size_t i) const { return m_textures.at(i); }
@@ -46,5 +46,6 @@ namespace starforge
 		VertexArray *m_vao = nullptr;
 		/// Encapsulation of the EBO in GPU mem
 		IndexBuffer *m_ebo = nullptr;
+		unsigned int m_numVertices = 0;
 	};
 }

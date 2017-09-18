@@ -1,4 +1,5 @@
 #include "Cube.hpp"
+#include <iostream>
 namespace starforge {
 	//CCW winding is front.
 	Cube::CubeVertex Cube::unitCubeVerts[36] = {
@@ -13,8 +14,8 @@ namespace starforge {
 
 
 		// Back face
-		CubeVertex(-0.5f, -0.5f, -0.5f, 0.f, 0.f, -1.f, 1.f, 0.f),	//Left, Bottom, Back
 		CubeVertex(-0.5f, 0.5f, -0.5f, 0.f, 0.f, -1.f, 1.f, 1.f),	//Left, Top, Back
+		CubeVertex(-0.5f, -0.5f, -0.5f, 0.f, 0.f, -1.f, 1.f, 0.f),	//Left, Bottom, Back
 		CubeVertex(0.5f, 0.5f, -0.5f, 0.f, 0.f, -1.f, 0.f, 1.f),	//Right, Top, Back
 
 		CubeVertex(0.5f, 0.5f, -0.5f, 0.f, 0.f, -1.f, 0.f, 1.f),	//Right, Top, Back
@@ -23,8 +24,8 @@ namespace starforge {
 
 
 		// Top Face
-		CubeVertex(-0.5f, 0.5f, -0.5f, 0.f, 1.f, 0.f, 0.f, 1.f),	//Left, Top, Back
 		CubeVertex(-0.5f, 0.5f, 0.5f, 0.f, 1.f, 0.f, 0.f, 0.f),		//Left, Top, Front
+		CubeVertex(-0.5f, 0.5f, -0.5f, 0.f, 1.f, 0.f, 0.f, 1.f),	//Left, Top, Back
 		CubeVertex(0.5f, 0.5f, 0.5f, 0.f, 1.f, 0.f, 1.f, 0.f),		//Right, Top, Front
 
 		CubeVertex(0.5f, 0.5f, 0.5f, 0.f, 1.f, 0.f, 1.f, 0.f),		//Right, Top, Front
@@ -42,11 +43,11 @@ namespace starforge {
 		CubeVertex(-0.5f, -0.5f, 0.5f, 0.f, -1.f, 0.f, 0.f, 1.f),	//Left, Bottom, Front
 
 		// Right face
-		CubeVertex(0.5f, 0.5f, 0.5f, 1.f, 0.f, 0.f, 0.f, 1.f),		//Right, Top, Front
 		CubeVertex(0.5f, -0.5f, 0.5f, 1.f, 0.f, 0.f, 0.f, 0.f),		//Right, Bottom, Front
 		CubeVertex(0.5f, -0.5f, -0.5f, 1.f, 0.f, 0.f, 1.f, 0.f),	//Right, Bottom, Back
+		CubeVertex(0.5f, 0.5f, -0.5f, 1.f, 0.f, 0.f, 1.f, 1.f),		//Right, Top, Back
 
-		CubeVertex(0.5f, -0.5f, -0.5f, 1.f, 0.f, 0.f, 1.f, 0.f),	//Right, Bottom, Back
+		CubeVertex(0.5f, -0.5f, 0.5f, 1.f, 0.f, 0.f, 0.f, 0.f),		//Right, Bottom, Front
 		CubeVertex(0.5f, 0.5f, -0.5f, 1.f, 0.f, 0.f, 1.f, 1.f),		//Right, Top, Back
 		CubeVertex(0.5f, 0.5f, 0.5f, 1.f, 0.f, 0.f, 0.f, 1.f),		//Right, Top, Front
 
@@ -78,7 +79,7 @@ namespace starforge {
 		}
 
 		//Create the vertex description.
-		int vertexSize = sizeof(CubeVertex); //8 components per vertex
+		int vertexSize = sizeof(CubeVertex);
 
 		VertexElement vertexElements[] = {
 			{ 0, VERTEXELEMENTTYPE_FLOAT, 3, vertexSize, 0},
@@ -88,6 +89,7 @@ namespace starforge {
 
 		m_vertexDescription = renderDevice.CreateVertexDescription(3, vertexElements);
 		InitBuffers(renderDevice);
+		m_numVertices = 36;
 	}
 
 	Cube::~Cube() {

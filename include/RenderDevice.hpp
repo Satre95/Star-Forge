@@ -76,8 +76,10 @@ namespace starforge
 	{
 	public:
 		virtual ~VertexDescription() {}
+		virtual unsigned int NumElements() = 0;
 
 	protected:
+
 		VertexDescription() {}
 	};
 

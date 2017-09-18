@@ -236,7 +236,7 @@ namespace starforge
 			numVertexElements = other.numVertexElements;
 			std::copy(other.openGLVertexElements, other.openGLVertexElements + numVertexElements, openGLVertexElements);
 		}
-
+		virtual unsigned int NumElements() override { return numVertexElements; }
 		unsigned int numVertexElements = 0;
 		OpenGLVertexElement *openGLVertexElements = nullptr;
 	};
@@ -257,7 +257,7 @@ namespace starforge
 
 				glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer->VBO);
 
-				for (unsigned int j = 0; j < vertexDescription->numVertexElements; j++)
+				for (unsigned int j = 0; j < vertexDescription->NumElements(); j++)
 				{
 					glEnableVertexAttribArray(vertexDescription->openGLVertexElements[j].index);
 					glVertexAttribPointer(vertexDescription->openGLVertexElements[j].index, vertexDescription->openGLVertexElements[j].size, vertexDescription->openGLVertexElements[j].type,

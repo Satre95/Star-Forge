@@ -65,7 +65,7 @@ int main() {
 	renderDevice->DestroyVertexShader(vertexShader);
 	renderDevice->DestroyPixelShader(pixelShader);
 
-	Cube * cubeMesh = new Cube(*renderDevice, 5.0f);
+	Cube * cubeMesh = new Cube(*renderDevice, 1.0f);
 
 	while (platform::PollPlatformWindow(window)) {
 		glm::mat4 model, view, projection;
