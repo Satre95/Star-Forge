@@ -20,15 +20,17 @@ set(GLAD "${GLFW_SOURCE_DIR}/deps/glad/glad.h"
 add_executable(triangle WIN32 MACOSX_BUNDLE triangle.cpp ${ICON} ${GLAD})
 add_executable(cube WIN32 MACOSX_BUNDLE cube.cpp image888.c ${ICON} ${GLAD})
 add_executable(model WIN32 MACOSX_BUNDLE model.cpp ${ICON} ${GLAD})
+add_executable(cubeMesh WIN32 MACOSX_BUNDLE cubeMesh.cpp ${ICON} ${GLAD})
 
 if(WIN32)
 	if(MSVC) # Check if we are using the Visual Studio compiler
 		set_target_properties(triangle PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
 		set_target_properties(cube PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
 		set_target_properties(model PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
+    set_target_properties(cubeMesh PROPERTIES LINK_FLAGS "/SUBSYSTEM:CONSOLE")
 	endif()
 endif()
-set(WINDOWS_BINARIES triangle cube model)
+set(WINDOWS_BINARIES triangle cube model cubeMesh)
 
 set_target_properties(${WINDOWS_BINARIES} PROPERTIES
                       FOLDER "StarForge-Examples")
