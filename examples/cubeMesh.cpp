@@ -77,7 +77,15 @@ int main() {
 
 		renderDevice->Clear(0.2f, 0.3f, 0.3f);
 
-		renderDevice->DrawMesh(*cubeMesh, *pipeline);
+		renderDevice->SetPipeline(pipeline);
+		renderDevice->SetVertexArray(cubeMesh->GetVertexArray());
+        if(cubeMesh->HasIndices()) {
+            renderDevice->SetIndexBuffer(cubeMesh->GetIndexBuffer());
+            renderDevice->DrawTrianglesIndexed32(0, cubeMesh->NumIndices());
+        } else {
+            renderDevice->DrawTriangles(0, cubeMesh->NumVertices());
+        }
+
 
 		platform::PresentPlatformWindow(window);
 

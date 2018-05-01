@@ -1,6 +1,7 @@
 #include <Platform.hpp>
 #include <RenderDevice.hpp>
 #include <glm/glm.hpp>
+#include "Model.hpp"
 
 int main() {
 	using namespace starforge;
@@ -15,22 +16,33 @@ int main() {
 	}
 
 	RenderDevice * renderDevice = starforge::CreateRenderDevice();
-	//Model * table = renderDevice->LoadModel("../../data/Culver_Mug/mugblack.stl");
-	//Model * nanosuit = renderDevice->LoadModel("../../data/nanosuit/nanosuit.obj");
-	//renderDevice->InitAndAssignDefaultModelPipeline(*nanosuit);
+	Model * nanosuit = new Model("../data/nanosuit/nanosuit.obj", *renderDevice);
 
-	//Model * room = renderDevice->LoadModel("../../data/Simple_Room/Simple_Room.obj");
-	//renderDevice->InitAndAssignDefaultModelPipeline(*room);
+    VertexShader *vertexShader = renderDevice->CreateVertexShader(g_defaultVertexShaderSource);
+    PixelShader *pixelShader = renderDevice->CreatePixelShader(g_defaultPixelShaderSource);
+    Pipeline *pipeline = renderDevice->CreatePipeline(vertexShader, pixelShader);
 
-	Model * bear = renderDevice->LoadModel("../../data/Bear/Bear.obj");
-	renderDevice->InitAndAssignDefaultModelPipeline(*bear);
+    //Set the texture uniforms
+    if (pipeline->GetParam("uTextureDiffuse"))
+        pipeline->GetParam("uTextureDiffuse")->SetAsInt(0);
+    if (pipeline->GetParam("uTextureSpecular"))
+        pipeline->GetParam("uTextureSpecular")->SetAsInt(1);
+    if (pipeline->GetParam("uTextureNormal"))
+        pipeline->GetParam("uTextureNormal")->SetAsInt(2);
+    if (pipeline->GetParam("uTextureHeight"))
+        pipeline->GetParam("uTextureHeight")->SetAsInt(3);
+
+    renderDevice->DestroyVertexShader(vertexShader);
+    renderDevice->DestroyPixelShader(pixelShader);
+
+    nanosuit->SetPipeline(pipeline);
 
 	while (platform::PollPlatformWindow(window))
 	{
 		renderDevice->Clear(0.2f, 0.4f, 0.3f);
-		glm::mat4 model, view, projection;
-		platform::GetPlatformViewport(model, view, projection);
-		renderDevice->DrawModel(*bear, model, view, projection);
+		glm::mat4 arcball, view, projection;
+		platform::GetPlatformViewport(arcball, view, projection);
+		renderDevice->DrawModel(*nanosuit, arcball, view, projection);
 
 		platform::PresentPlatformWindow(window);
 	}
