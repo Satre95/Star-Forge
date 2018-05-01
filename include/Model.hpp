@@ -22,6 +22,8 @@ namespace starforge {
 		Mesh * GetMesh(size_t i) const { return m_meshes.at(i); }
 		size_t NumMeshes() const { return m_meshes.size(); }
 		void AddMesh(Mesh * mesh) { m_meshes.push_back(mesh); }
+		glm::mat4 & GetModelMatrix () { return m_modelMatrix; }
+		const glm::mat4 & GetModelMatrix() const { return m_modelMatrix; }
 		
 	protected:
 		Model() {};
@@ -37,7 +39,7 @@ namespace starforge {
 		 */
 		Pipeline *m_pipeline = nullptr;
 		/// The model matrix of this mesh.
-		glm::mat4 m_modelMatrix;
+		glm::mat4 m_modelMatrix = glm::mat4(1.f);
 		bool m_gammaCorrection;
 		std::vector<Mesh *> m_meshes;
 		std::vector<Texture2D *> m_texturesLoaded;

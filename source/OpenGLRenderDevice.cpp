@@ -2,9 +2,11 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "OpenGLRenderDevice.hpp"
 #include "Utilities.hpp"
+#include "Model.hpp"
 
 namespace starforge {
 
@@ -382,5 +384,50 @@ namespace starforge {
             std::cout << error << " | " << file << " (" << line << ")" << std::endl;
         }
         return errorCode;
+    }
+
+    void OpenGLRenderDevice::DrawModel(Model & aModel, glm::mat4 & arcball, glm::mat4 & view, glm::mat4 & projection)
+    {
+        Pipeline * pipeline = aModel.GetPipeline();
+        //Set MVP uniforms
+        PipelineParam *uModel, *uView, *uProjection, *uNormalMatrix, *uArcball;
+        uModel = pipeline->GetParam("uModel");
+        uView = pipeline->GetParam("uView");
+        uProjection = pipeline->GetParam("uProjection");
+        uNormalMatrix = pipeline->GetParam("uNormalMatrix");
+        uArcball = pipeline->GetParam("uArcball");
+
+//        if (uModel)
+//            uModel->SetAsMat4(glm::value_ptr(aModel.));
+        if (uView)
+            uView->SetAsMat4(glm::value_ptr(view));
+        if (uProjection)
+            uProjection->SetAsMat4(glm::value_ptr(projection));
+        if (uNormalMatrix)
+        {
+            //Create the normal matrix
+            glm::mat4 modelMat = aModel.GetModelMatrix();
+            glm::mat4 normalMat = glm::mat3(glm::transpose(glm::inverse(arcball * modelMat)));
+            uNormalMatrix->SetAsMat3(glm::value_ptr(normalMat));
+        }
+        if(uArcball)
+            uArcball->SetAsMat4(glm::value_ptr(arcball));
+
+        SetPipeline(pipeline);
+        //For each of the model's meshes, draw
+        for (size_t i = 0; i < aModel.NumMeshes(); i++)
+        {
+            Mesh * aMesh = aModel.GetMesh(i);
+            //Bind each of the mesh's textures.
+            for (size_t j = 0; j < aMesh->NumTextures(); j++)
+                SetTexture2D(j, aMesh->GetTexture(j));
+
+            //Bind the mesh's VAO and buffers
+            SetVertexArray(aMesh->GetVertexArray());
+            SetIndexBuffer(aMesh->GetIndexBuffer());
+
+            //Draw!
+            DrawTrianglesIndexed32(0, aMesh->NumIndices());
+        }
     }
 }

@@ -252,6 +252,7 @@ namespace starforge
 
 		void SetPointSize(float pSize) override;
 
+		void DrawModel(Model & aModel, glm::mat4 & arcball, glm::mat4 & view, glm::mat4 & projection) override;
 
 	private:
 		OpenGLRasterState *m_RasterState = nullptr;

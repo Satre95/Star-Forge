@@ -8,29 +8,23 @@ namespace starforge
 uniform mat4 uModel;
 uniform mat4 uView;
 uniform mat4 uProjection;
+uniform mat4 uArcball;
 uniform mat3 uNormalMatrix;
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoord;
-layout (location = 3) in vec3 aTangent;
-layout (location = 4) in vec3 aBitangent;
-layout (location = 5) in vec4 aColor;
+layout (location = 2) in vec4 aColor;
 
+out vec3 FragPos;
 out vec3 FragNormal;
-out vec2 FragTexCoord;
-out vec3 FragTangent;
-out vec3 FragBitangent;
 out vec4 FragVertColor;
 
 void main()
 {
-	gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
-	FragNormal = uNormalMatrix * aNormal;
-	FragTexCoord = aTexCoord;
-	FragTangent = aTangent;
-	FragBitangent = aBitangent;
-	FragVertColor = aColor;
+gl_Position = uProjection * uView * uArcball * uModel  * vec4(aPos, 1.0f);
+FragPos = vec3(gl_Position);
+FragNormal = mat3(transpose(inverse(uModel))) * aNormal;
+FragVertColor = aColor;
 }
 	)END";
 
@@ -40,29 +34,23 @@ void main()
 uniform mat4 uModel;
 uniform mat4 uView;
 uniform mat4 uProjection;
+uniform mat4 uArcball;
 uniform mat3 uNormalMatrix;
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec2 aTexCoord;
-layout (location = 3) in vec3 aTangent;
-layout (location = 4) in vec3 aBitangent;
-layout (location = 5) in vec4 aColor;
+layout (location = 2) in vec4 aColor;
 
+out vec3 FragPos;
 out vec3 FragNormal;
-out vec2 FragTexCoord;
-out vec3 FragTangent;
-out vec3 FragBitangent;
 out vec4 FragVertColor;
 
 void main()
 {
-	gl_Position = uProjection * uView * uModel * vec4(aPos, 1.0f);
-	FragNormal = uNormalMatrix * aNormal;
-	FragTexCoord = aTexCoord;
-	FragTangent = aTangent;
-	FragBitangent = aBitangent;
-	FragVertColor = aColor;
+gl_Position = uProjection * uView * uArcball * uModel  * vec4(aPos, 1.0f);
+FragPos = vec3(gl_Position);
+FragNormal = mat3(transpose(inverse(uModel))) * aNormal;
+FragVertColor = aColor;
 }
 	)END";
 #endif
@@ -70,71 +58,116 @@ void main()
 	//--------------------------------------------------------------------
 #ifdef __APPLE__
 	const char * g_defaultPixelShaderSource = R"END(
-#version 410 core
-// Allows shader to detect if textures are bound (requires OpenGL >= 4.2)
-// see: https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_texture_query_levels.txt
-//#extension GL_ARB_texture_query_levels : enable
+struct DirectLight
+{
+	vec3 direction;
 
-uniform sampler2D uTextureDiffuse;
-uniform sampler2D uTextureSpecular;
-uniform sampler2D uTextureNormal;
-uniform sampler2D uTextureHeight;
+	vec3 ambient;
+	vec3 diffuse;
+};
 
+uniform DirectLight dLight1 = DirectLight(
+								normalize(vec3(0.9f, -0.5f, -1.f)),
+								vec3(0.2f),
+								vec3(1.f)
+								);
+uniform DirectLight dLight2 = DirectLight(
+								normalize(vec3(-0.9f, -0.5f, 1.f)),
+								vec3(0.2f),
+								vec3(1.f, 0.8f, 0.8f)
+								);
+
+uniform vec3 uDefaultFragColor;
+uniform bool uComputeShading;
+
+in vec3 FragPos;
 in vec3 FragNormal;
-in vec2 FragTexCoord;
-in vec3 FragTangent;
-in vec3 FragBitangent;
 in vec4 FragVertColor;
 
 out vec4 FragColor;
 
 void main()
 {
-	//TODO: Check diffuse texture
-	//if(textureQueryLevels(uTextureDiffuse) != 0)
-		//FragColor = texture(uTextureDiffuse, FragTexCoord);
-	//else
-		FragColor = vec4(0.8f, 0.2f, 0.4f, 1.0f);
-	//TODO: Check specular texture
-	//TODO: Check for vertex color
-	//TODO: Perform lighting calculations
+	if(uComputeShading) {
+		// Ambient
+		const float ambientStrength = 0.2f;
+		vec3 ambient1 = ambientStrength * dLight1.ambient;
+		vec3 ambient2 = ambientStrength * dLight2.ambient;
 
-	//FragColor = vec4(texture(uTextureSampler, FragTexCoord).rgb, 1);
+		// Diffuse
+		vec3 norm = normalize(FragNormal);
+		vec3 lightDir = normalize(-dLight1.direction);
+		float diff = max(dot(norm, lightDir), 0.0);
+		vec3 diffuse1 = diff * dLight1.diffuse;
+
+		lightDir = normalize(-dLight2.direction);
+		diff = max(dot(norm, lightDir), 0.0);
+		vec3 diffuse2 = diff * dLight2.diffuse;
+
+		FragColor = vec4((ambient1 + ambient2 + diffuse1 + diffuse2) * uDefaultFragColor, 1.f);
+	}
+	else
+	{
+		FragColor = vec4(uDefaultFragColor, 1.f);
+	}
 }
 	)END";
 
 #else
 	const char * g_defaultPixelShaderSource = R"END(
 #version 450 core
-// Allows shader to detect if textures are bound (requires OpenGL >= 4.2)
-// see: https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_texture_query_levels.txt
-//#extension GL_ARB_texture_query_levels : enable
+struct DirectLight
+{
+	vec3 direction;
 
-uniform sampler2D uTextureDiffuse;
-uniform sampler2D uTextureSpecular;
-uniform sampler2D uTextureNormal;
-uniform sampler2D uTextureHeight;
+	vec3 ambient;
+	vec3 diffuse;
+};
 
+uniform DirectLight dLight1 = DirectLight(
+								normalize(vec3(0.9f, -0.5f, -1.f)),
+								vec3(0.2f),
+								vec3(1.f)
+								);
+uniform DirectLight dLight2 = DirectLight(
+								normalize(vec3(-0.9f, -0.5f, 1.f)),
+								vec3(0.2f),
+								vec3(1.f, 0.8f, 0.8f)
+								);
+
+uniform vec3 uDefaultFragColor;
+uniform bool uComputeShading;
+
+in vec3 FragPos;
 in vec3 FragNormal;
-in vec2 FragTexCoord;
-in vec3 FragTangent;
-in vec3 FragBitangent;
 in vec4 FragVertColor;
 
 out vec4 FragColor;
 
 void main()
 {
-	//TODO: Check diffuse texture
-	//if(textureQueryLevels(uTextureDiffuse) != 0)
-		//FragColor = texture(uTextureDiffuse, FragTexCoord);
-	//else
-		FragColor = vec4(0.8f, 0.2f, 0.4f, 1.0f);
-	//TODO: Check specular texture
-	//TODO: Check for vertex color
-	//TODO: Perform lighting calculations
+	if(uComputeShading) {
+		// Ambient
+		const float ambientStrength = 0.2f;
+		vec3 ambient1 = ambientStrength * dLight1.ambient;
+		vec3 ambient2 = ambientStrength * dLight2.ambient;
 
-	//FragColor = vec4(texture(uTextureSampler, FragTexCoord).rgb, 1);
+		// Diffuse
+		vec3 norm = normalize(FragNormal);
+		vec3 lightDir = normalize(-dLight1.direction);
+		float diff = max(dot(norm, lightDir), 0.0);
+		vec3 diffuse1 = diff * dLight1.diffuse;
+
+		lightDir = normalize(-dLight2.direction);
+		diff = max(dot(norm, lightDir), 0.0);
+		vec3 diffuse2 = diff * dLight2.diffuse;
+
+		FragColor = vec4((ambient1 + ambient2 + diffuse1 + diffuse2) * uDefaultFragColor, 1.f);
+	}
+	else
+	{
+		FragColor = vec4(uDefaultFragColor, 1.f);
+	}
 }
 	)END";
 #endif

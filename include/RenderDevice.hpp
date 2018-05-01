@@ -4,6 +4,7 @@
 
 namespace starforge {
 
+    class Model;
 /// Encapsulates a vertex shader defintion
 class VertexShader
 {
@@ -405,6 +406,9 @@ public:
 
     /// Sets the default pipeline
     virtual void BindDefaultPipeline() = 0;
+
+    ///Draws the give model
+    virtual void DrawModel(Model & aModel, glm::mat4 & arcball, glm::mat4 & view, glm::mat4 & projection) = 0;
 };
 
 /// Creates a RenderDevice. Note: Always initilize the platform BEFORE calling this fn!
